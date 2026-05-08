@@ -8,4 +8,6 @@ public:
     void showOrderCounts(const std::map<OrderStatus, int>& counts) const;
     void showStockLabel(const std::string& sampleId, const std::string& name,
                         int stock, const std::string& label) const;
+    void showStockHeader() const;
+    void showStockFooter() const;
 };
