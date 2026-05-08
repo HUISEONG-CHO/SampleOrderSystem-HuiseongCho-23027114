@@ -46,6 +46,10 @@ set(VIEW_SOURCES
 add_executable(SampleOrderSystem src/main.cpp ${JSON_SOURCES} ${MODEL_SOURCES} ${REPOSITORY_SOURCES} ${CONTROLLER_SOURCES} ${VIEW_SOURCES})
 target_include_directories(SampleOrderSystem PRIVATE src)
 
+# 정적 CRT 링킹 — 런타임 DLL 없이 단독 실행 가능
+set_property(TARGET SampleOrderSystem PROPERTY
+    MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
+
 include(FetchContent)
 FetchContent_Declare(
     googletest
