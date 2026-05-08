@@ -4,6 +4,10 @@ project(SampleOrderSystem CXX)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+if(MSVC)
+    add_compile_options(/utf-8)
+endif()
+
 set(JSON_SOURCES
     src/json/JsonValue.cpp
     src/json/JsonParser.cpp
@@ -24,6 +28,9 @@ set(REPOSITORY_SOURCES
 set(CONTROLLER_SOURCES
     src/controller/SampleController.cpp
     src/controller/OrderController.cpp
+    src/controller/ProductionController.cpp
+    src/controller/MonitorController.cpp
+    src/controller/ReleaseController.cpp
 )
 
 add_executable(SampleOrderSystem src/main.cpp ${JSON_SOURCES} ${MODEL_SOURCES} ${REPOSITORY_SOURCES} ${CONTROLLER_SOURCES})
