@@ -58,10 +58,11 @@ static void menuApprove(OrderController& oc, OrderView& ov,
                         OrderRepository& or_, MainView& mv) {
     ov.showAllOrders(or_.findByStatus(OrderStatus::RESERVED));
     std::cout << "주문 ID: "; std::string oid; std::getline(std::cin, oid);
-    std::cout << "a.승인  r.거절\n> "; std::string cmd; std::getline(std::cin, cmd);
+    std::cout << "  1. 승인\n  2. 거절\n  0. 돌아가기\n> ";
+    std::string cmd; std::getline(std::cin, cmd);
     try {
-        if      (cmd == "a") { oc.approveOrder(oid); mv.showMessage("승인 완료"); }
-        else if (cmd == "r") { oc.rejectOrder(oid);  mv.showMessage("거절 완료"); }
+        if      (cmd == "1" || cmd == "승인") { oc.approveOrder(oid); mv.showMessage("승인 완료"); }
+        else if (cmd == "2" || cmd == "거절") { oc.rejectOrder(oid);  mv.showMessage("거절 완료"); }
     } catch (const std::exception& e) { mv.showError(e.what()); }
 }
 
@@ -76,9 +77,9 @@ static void menuMonitor(MonitorController& mc, SampleController& sc,
 static void menuProduction(ProductionController& pc, ProductionView& pv, MainView& mv) {
     if (pc.hasJobs()) {
         pv.showCurrentJob(*pc.currentJob());
-        std::cout << "c.생산완료  x.돌아가기\n> ";
+        std::cout << "  1. 생산완료\n  0. 돌아가기\n> ";
         std::string cmd; std::getline(std::cin, cmd);
-        if (cmd == "c") { pc.completeProduction(); mv.showMessage("생산 완료 처리됨"); }
+        if (cmd == "1" || cmd == "생산완료") { pc.completeProduction(); mv.showMessage("생산 완료 처리됨"); }
     } else {
         mv.showMessage("현재 생산 중인 작업 없음");
     }
@@ -120,13 +121,13 @@ int main() {
     while (true) {
         mv.showMenu();
         std::string sel; std::getline(std::cin, sel);
-        if      (sel == "0") { mv.showMessage("종료합니다."); break; }
-        else if (sel == "1") menuSample(sc, sv, mv);
-        else if (sel == "2") menuOrder(oc, mv);
-        else if (sel == "3") menuApprove(oc, ov, orderRepo, mv);
-        else if (sel == "4") menuMonitor(mc, sc, monv);
-        else if (sel == "5") menuProduction(pc, pv, mv);
-        else if (sel == "6") menuRelease(rc, rv, mv);
+        if      (sel == "0" || sel == "종료")      { mv.showMessage("종료합니다."); break; }
+        else if (sel == "1" || sel == "시료관리")  menuSample(sc, sv, mv);
+        else if (sel == "2" || sel == "주문접수"  || sel == "시료주문 접수") menuOrder(oc, mv);
+        else if (sel == "3" || sel == "승인거절"  || sel == "주문 승인·거절") menuApprove(oc, ov, orderRepo, mv);
+        else if (sel == "4" || sel == "모니터링"  || sel == "현황 모니터링") menuMonitor(mc, sc, monv);
+        else if (sel == "5" || sel == "생산라인")  menuProduction(pc, pv, mv);
+        else if (sel == "6" || sel == "출고처리")  menuRelease(rc, rv, mv);
         else mv.showMessage("잘못된 입력입니다.");
     }
     return 0;
