@@ -10,6 +10,7 @@ public:
     void showStockLabel(const std::string& sampleId, const std::string& name,
                         int stock, const std::string& label) const;
     void showProductionProgress(const ProductionJob& job, int elapsedMinutes) const;
+    void showProductionWaiting(const ProductionJob& job, int queuePos) const;
     void showStockHeader() const;
     void showStockFooter() const;
 };

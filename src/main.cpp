@@ -113,9 +113,13 @@ static void menuMonitor(MonitorController& mc, SampleController& sc,
     for (const auto& s : sc.getAllSamples()) {
         monv.showStockLabel(s.getId(), s.getName(), s.getStock(),
                             mc.getStockLabel(s.getId()));
-        for (const auto& job : jobs)
-            if (job.getSampleId() == s.getId())
-                monv.showProductionProgress(job, pc.elapsedMinutes(job));
+        for (size_t i = 0; i < jobs.size(); ++i) {
+            if (jobs[i].getSampleId() != s.getId()) continue;
+            if (i == 0)
+                monv.showProductionProgress(jobs[i], pc.elapsedMinutes(jobs[i]));
+            else
+                monv.showProductionWaiting(jobs[i], static_cast<int>(i + 1));
+        }
     }
     monv.showStockFooter();
 }

@@ -74,6 +74,13 @@ void MonitorView::showProductionProgress(const ProductionJob& job, int elapsedMi
               << "        │\n";
 }
 
+void MonitorView::showProductionWaiting(const ProductionJob& job, int queuePos) const {
+    std::cout << "  │     " << DIM << "└ 대기 중  [" << queuePos << "번째]"
+              << "  생산예정 " << job.getProductionQty() << "개"
+              << "  (" << job.getTotalTime() << "분 소요)" << RESET
+              << "              │\n";
+}
+
 void MonitorView::showStockHeader() const {
     std::cout << "  ├──────────────────────────────────────────┤\n";
     std::cout << "  │  " << BOLD << "시료별 재고 현황" << RESET
