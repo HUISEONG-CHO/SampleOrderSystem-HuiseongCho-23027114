@@ -97,6 +97,12 @@ static void menuRelease(ReleaseController& rc, ReleaseView& rv, MainView& mv) {
     rv.showConfirmedOrders(list);
     if (list.empty()) return;
     std::cout << "출고할 주문 ID: "; std::string oid; std::getline(std::cin, oid);
+
+    bool exists = false;
+    for (const auto& o : list)
+        if (o.getId() == oid) { exists = true; break; }
+    if (!exists) { mv.showError("입력한 주문이 존재하지 않습니다"); return; }
+
     try {
         rc.release(oid);
         rv.showReleaseResult(oid);
