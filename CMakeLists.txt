@@ -16,7 +16,12 @@ set(MODEL_SOURCES
     src/model/ProductionJob.cpp
 )
 
-add_executable(SampleOrderSystem src/main.cpp ${JSON_SOURCES} ${MODEL_SOURCES})
+set(REPOSITORY_SOURCES
+    src/repository/SampleRepository.cpp
+    src/repository/OrderRepository.cpp
+)
+
+add_executable(SampleOrderSystem src/main.cpp ${JSON_SOURCES} ${MODEL_SOURCES} ${REPOSITORY_SOURCES})
 target_include_directories(SampleOrderSystem PRIVATE src)
 
 include(FetchContent)
