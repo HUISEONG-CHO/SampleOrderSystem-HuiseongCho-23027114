@@ -4,7 +4,7 @@
 SampleController::SampleController(SampleRepository& repo) : repo(repo) {}
 
 std::string SampleController::generateId() const {
-    return "S" + std::to_string(repo.findAll().size() + 1);
+    return std::to_string(repo.findAll().size() + 1);
 }
 
 void SampleController::registerSample(const std::string& name, int avgProductionTime, double yieldRate) {

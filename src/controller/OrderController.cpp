@@ -12,7 +12,7 @@ OrderController::OrderController(SampleRepository& sampleRepo,
     : sampleRepo(sampleRepo), orderRepo(orderRepo), productionQueue(productionQueue) {}
 
 std::string OrderController::generateOrderId() const {
-    return "O" + std::to_string(orderRepo.findAll().size() + 1);
+    return std::to_string(orderRepo.findAll().size() + 1);
 }
 
 std::string OrderController::currentTimestamp() const {

@@ -54,16 +54,10 @@ static void menuOrder(OrderController& oc, MainView& mv) {
     } catch (const std::exception& e) { mv.showError(e.what()); }
 }
 
-static void normalizeId(std::string& id, char prefix) {
-    if (!id.empty() && std::isdigit((unsigned char)id[0]))
-        id = prefix + id;
-}
-
 static void menuApprove(OrderController& oc, OrderView& ov,
                         OrderRepository& or_, MainView& mv) {
     ov.showAllOrders(or_.findByStatus(OrderStatus::RESERVED));
     std::cout << "주문 ID: "; std::string oid; std::getline(std::cin, oid);
-    normalizeId(oid, 'O');
     std::cout << "  1. 승인\n  2. 거절\n  0. 돌아가기\n> ";
     std::string cmd; std::getline(std::cin, cmd);
     try {
@@ -96,7 +90,6 @@ static void menuRelease(ReleaseController& rc, ReleaseView& rv, MainView& mv) {
     rv.showConfirmedOrders(list);
     if (list.empty()) return;
     std::cout << "출고할 주문 ID: "; std::string oid; std::getline(std::cin, oid);
-    normalizeId(oid, 'O');
     try {
         rc.release(oid);
         rv.showReleaseResult(oid);
