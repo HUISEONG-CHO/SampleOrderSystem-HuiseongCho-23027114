@@ -8,7 +8,7 @@ static const int OW_ID      = 3;
 static const int OW_CUST    = 12;
 static const int OW_SID     = 6;
 static const int OW_QTY     = 5;
-static const int OW_STATUS  = 10;
+static const int OW_STATUS  = 12;
 
 static void orderTableSep(const char* l, const char* m, const char* r) {
     std::cout << "  " << l
@@ -21,11 +21,11 @@ static void orderTableSep(const char* l, const char* m, const char* r) {
 
 std::string OrderView::statusToStr(OrderStatus s) {
     switch (s) {
-        case OrderStatus::RESERVED:  return "● 접수";
-        case OrderStatus::REJECTED:  return "✖ 거절";
-        case OrderStatus::PRODUCING: return "◆ 생산중";
-        case OrderStatus::CONFIRMED: return "✔ 확정";
-        case OrderStatus::RELEASE:   return "▲ 출고";
+        case OrderStatus::RESERVED:  return "● RESERVED";
+        case OrderStatus::REJECTED:  return "✖ REJECTED";
+        case OrderStatus::PRODUCING: return "◆ PRODUCING";
+        case OrderStatus::CONFIRMED: return "✔ CONFIRMED";
+        case OrderStatus::RELEASE:   return "▲ RELEASE";
     }
     return "";
 }
