@@ -19,6 +19,7 @@ ProductionController::ProductionController(SampleRepository&        sampleRepo,
 void ProductionController::tick() {
     auto now  = std::chrono::system_clock::now();
     auto jobs = jobRepo.findAll();
+
     for (const auto& job : jobs) {
         auto enqueued = parseISO8601(job.getEnqueuedAt());
         auto elapsed  = std::chrono::duration_cast<std::chrono::minutes>(now - enqueued).count();
@@ -32,6 +33,18 @@ void ProductionController::tick() {
             orderRepo.update(job.getOrderId(), order);
 
             jobRepo.remove(job.getOrderId());
+        }
+    }
+
+    // PRODUCING 상태인데 대응 Job이 없는 고아 주문 → RESERVED로 복원
+    for (const auto& order : orderRepo.findByStatus(OrderStatus::PRODUCING)) {
+        bool hasJob = false;
+        for (const auto& job : jobs)
+            if (job.getOrderId() == order.getId()) { hasJob = true; break; }
+        if (!hasJob) {
+            Order o = order;
+            o.setStatus(OrderStatus::RESERVED);
+            orderRepo.update(order.getId(), o);
         }
     }
 }
