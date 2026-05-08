@@ -33,7 +33,16 @@ set(CONTROLLER_SOURCES
     src/controller/ReleaseController.cpp
 )
 
-add_executable(SampleOrderSystem src/main.cpp ${JSON_SOURCES} ${MODEL_SOURCES} ${REPOSITORY_SOURCES} ${CONTROLLER_SOURCES})
+set(VIEW_SOURCES
+    src/view/SampleView.cpp
+    src/view/OrderView.cpp
+    src/view/MonitorView.cpp
+    src/view/ProductionView.cpp
+    src/view/ReleaseView.cpp
+    src/view/MainView.cpp
+)
+
+add_executable(SampleOrderSystem src/main.cpp ${JSON_SOURCES} ${MODEL_SOURCES} ${REPOSITORY_SOURCES} ${CONTROLLER_SOURCES} ${VIEW_SOURCES})
 target_include_directories(SampleOrderSystem PRIVATE src)
 
 include(FetchContent)

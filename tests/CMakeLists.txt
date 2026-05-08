@@ -10,6 +10,7 @@ add_executable(SampleOrderSystem_Tests
     test_production_controller.cpp
     test_monitor_controller.cpp
     test_release_controller.cpp
+    test_views.cpp
     ${CMAKE_SOURCE_DIR}/src/json/JsonValue.cpp
     ${CMAKE_SOURCE_DIR}/src/json/JsonParser.cpp
     ${CMAKE_SOURCE_DIR}/src/json/JsonSerializer.cpp
@@ -23,6 +24,12 @@ add_executable(SampleOrderSystem_Tests
     ${CMAKE_SOURCE_DIR}/src/controller/ProductionController.cpp
     ${CMAKE_SOURCE_DIR}/src/controller/MonitorController.cpp
     ${CMAKE_SOURCE_DIR}/src/controller/ReleaseController.cpp
+    ${CMAKE_SOURCE_DIR}/src/view/SampleView.cpp
+    ${CMAKE_SOURCE_DIR}/src/view/OrderView.cpp
+    ${CMAKE_SOURCE_DIR}/src/view/MonitorView.cpp
+    ${CMAKE_SOURCE_DIR}/src/view/ProductionView.cpp
+    ${CMAKE_SOURCE_DIR}/src/view/ReleaseView.cpp
+    ${CMAKE_SOURCE_DIR}/src/view/MainView.cpp
 )
 target_include_directories(SampleOrderSystem_Tests PRIVATE ${CMAKE_SOURCE_DIR}/src)
 target_link_libraries(SampleOrderSystem_Tests GTest::gtest_main)
