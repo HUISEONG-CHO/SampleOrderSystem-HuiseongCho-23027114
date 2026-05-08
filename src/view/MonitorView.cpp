@@ -36,10 +36,10 @@ void MonitorView::showOrderCounts(const std::map<OrderStatus, int>& counts) cons
                   << "  " << BOLD << padLeft(std::to_string(val), 3) << RESET << "건"
                   << "                  │\n";
     };
-    row(YELLOW,  "접수중",  res, maxVal);
-    row(CYAN,    "생산중",  pro, maxVal);
-    row(B_GREEN, "확정",    con, maxVal);
-    row(BLUE,    "출고완료",rel, maxVal);
+    row(YELLOW,  "RESERVED",  res, maxVal);
+    row(CYAN,    "PRODUCING", pro, maxVal);
+    row(B_GREEN, "CONFIRMED", con, maxVal);
+    row(BLUE,    "RELEASE",   rel, maxVal);
 
     std::cout << "  └──────────────────────────────────────────┘\n";
 }
