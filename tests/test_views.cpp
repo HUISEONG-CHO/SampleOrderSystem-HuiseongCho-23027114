@@ -80,16 +80,16 @@ TEST(ProductionViewTest, ShowJobContainsOrderId) {
     ProductionView view;
     ProductionJob job("O001", "S001", 140, 4200, "2026-05-08T10:00:00");
     testing::internal::CaptureStdout();
-    view.showCurrentJob(job);
+    view.showCurrentJob(job, 0);
     std::string out = testing::internal::GetCapturedStdout();
     EXPECT_NE(out.find("O001"), std::string::npos);
 }
 
 TEST(ProductionViewTest, ShowEmptyQueue) {
     ProductionView view;
-    std::queue<ProductionJob> emptyQ;
+    std::vector<ProductionJob> emptyVec;
     testing::internal::CaptureStdout();
-    view.showQueue(emptyQ);
+    view.showQueue(emptyVec);
     std::string out = testing::internal::GetCapturedStdout();
     EXPECT_FALSE(out.empty());
 }
