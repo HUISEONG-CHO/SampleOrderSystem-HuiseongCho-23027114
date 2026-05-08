@@ -56,8 +56,15 @@ static void menuOrder(OrderController& oc, MainView& mv) {
 
 static void menuApprove(OrderController& oc, OrderView& ov,
                         OrderRepository& or_, MainView& mv) {
-    ov.showAllOrders(or_.findByStatus(OrderStatus::RESERVED));
+    auto reserved = or_.findByStatus(OrderStatus::RESERVED);
+    ov.showAllOrders(reserved);
     std::cout << "주문 ID: "; std::string oid; std::getline(std::cin, oid);
+
+    bool exists = false;
+    for (const auto& o : reserved)
+        if (o.getId() == oid) { exists = true; break; }
+    if (!exists) { mv.showError("입력한 주문이 존재하지 않습니다"); return; }
+
     std::cout << "  1. 승인\n  2. 거절\n  0. 돌아가기\n> ";
     std::string cmd; std::getline(std::cin, cmd);
     try {
