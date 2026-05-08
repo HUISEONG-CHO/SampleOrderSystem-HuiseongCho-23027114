@@ -1,0 +1,21 @@
+Phase    : Phase6
+Stage    : GREEN
+Date     : 2026-05-08
+Result   : PASS
+
+[테스트 목록]
+- SampleViewTest.ShowSampleContainsNameAndStock   : PASS
+- SampleViewTest.ShowAllSamplesContainsAll        : PASS
+- OrderViewTest.ShowOrderContainsCustomerAndQuantity: PASS
+- OrderViewTest.ShowAllOrdersContainsAll          : PASS
+- MonitorViewTest.ShowCountsContainsStatus        : PASS
+- MonitorViewTest.ShowStockLabelContainsLabel     : PASS
+- ProductionViewTest.ShowJobContainsOrderId       : PASS
+- ProductionViewTest.ShowEmptyQueue               : PASS
+- ReleaseViewTest.ShowConfirmedListContainsOrders : PASS
+- MainViewTest.ShowMenuContainsOptions            : PASS
+- MainViewTest.ShowMessageContainsText            : PASS
+  (+ 기존 44개 회귀 없음)
+
+[빌드 정보]
+- 총 테스트 : 55 / 55 PASS  (0.79 sec)
