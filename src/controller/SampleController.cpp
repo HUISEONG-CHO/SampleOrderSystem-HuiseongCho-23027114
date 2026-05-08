@@ -19,10 +19,15 @@ std::vector<Sample> SampleController::getAllSamples() const {
     return repo.findAll();
 }
 
-std::vector<Sample> SampleController::searchByName(const std::string& keyword) const {
+std::vector<Sample> SampleController::searchByKeyword(const std::string& keyword) const {
     std::vector<Sample> result;
-    for (const auto& s : repo.findAll())
-        if (s.getName().find(keyword) != std::string::npos)
+    for (const auto& s : repo.findAll()) {
+        if (s.getId().find(keyword)   != std::string::npos ||
+            s.getName().find(keyword) != std::string::npos ||
+            std::to_string(s.getAvgProductionTime()).find(keyword) != std::string::npos ||
+            std::to_string(s.getStock()).find(keyword) != std::string::npos ||
+            std::to_string(s.getYieldRate()).find(keyword) != std::string::npos)
             result.push_back(s);
+    }
     return result;
 }

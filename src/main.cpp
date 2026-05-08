@@ -25,21 +25,21 @@ static void clearInput() {
 }
 
 static void menuSample(SampleController& sc, SampleView& sv, MainView& mv) {
-    std::cout << "\n[시료관리] a.등록  b.목록  c.검색  x.돌아가기\n> ";
+    std::cout << "\n[시료관리]\n  1. 등록\n  2. 목록\n  3. 검색\n  0. 돌아가기\n> ";
     std::string cmd; std::getline(std::cin, cmd);
-    if (cmd == "a") {
+    if (cmd == "1" || cmd == "등록") {
         std::string name; int t; double y;
         std::cout << "이름: "; std::getline(std::cin, name);
         std::cout << "평균생산시간(분): "; std::cin >> t; clearInput();
         std::cout << "수율(0~1): "; std::cin >> y; clearInput();
         sc.registerSample(name, t, y);
         mv.showMessage("시료 등록 완료");
-    } else if (cmd == "b") {
+    } else if (cmd == "2" || cmd == "목록") {
         sv.showAllSamples(sc.getAllSamples());
-    } else if (cmd == "c") {
+    } else if (cmd == "3" || cmd == "검색") {
         std::string kw;
-        std::cout << "검색어: "; std::getline(std::cin, kw);
-        sv.showAllSamples(sc.searchByName(kw));
+        std::cout << "검색어 (ID/이름/생산시간/수율/재고): "; std::getline(std::cin, kw);
+        sv.showAllSamples(sc.searchByKeyword(kw));
     }
 }
 
