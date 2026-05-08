@@ -106,12 +106,17 @@ static void menuApprove(OrderController& oc, OrderView& ov,
 }
 
 static void menuMonitor(MonitorController& mc, SampleController& sc,
-                         MonitorView& monv) {
+                         ProductionController& pc, MonitorView& monv) {
     monv.showOrderCounts(mc.getOrderCounts());
     monv.showStockHeader();
-    for (const auto& s : sc.getAllSamples())
+    auto jobs = pc.getAllJobs();
+    for (const auto& s : sc.getAllSamples()) {
         monv.showStockLabel(s.getId(), s.getName(), s.getStock(),
                             mc.getStockLabel(s.getId()));
+        for (const auto& job : jobs)
+            if (job.getSampleId() == s.getId())
+                monv.showProductionProgress(job, pc.elapsedMinutes(job));
+    }
     monv.showStockFooter();
 }
 
@@ -173,7 +178,7 @@ int main() {
         if      (sel == "1" || sel == "시료관리")  menuSample(sc, sv, mv);
         else if (sel == "2" || sel == "주문접수"  || sel == "시료주문 접수") menuOrder(oc, sc, mv);
         else if (sel == "3" || sel == "승인거절"  || sel == "주문 승인·거절") menuApprove(oc, ov, orderRepo, mv);
-        else if (sel == "4" || sel == "모니터링"  || sel == "현황 모니터링") menuMonitor(mc, sc, monv);
+        else if (sel == "4" || sel == "모니터링"  || sel == "현황 모니터링") menuMonitor(mc, sc, pc, monv);
         else if (sel == "5" || sel == "생산라인")  menuProduction(pc, pv, mv);
         else if (sel == "6" || sel == "출고처리")  menuRelease(rc, rv, mv);
         else { mv.showMessage("잘못된 입력입니다."); acted = false; }

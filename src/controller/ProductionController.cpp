@@ -60,6 +60,10 @@ const ProductionJob* ProductionController::currentJob() const {
     return &cache.front();
 }
 
+std::vector<ProductionJob> ProductionController::getAllJobs() const {
+    return jobRepo.findAll();
+}
+
 int ProductionController::elapsedMinutes(const ProductionJob& job) const {
     auto now      = std::chrono::system_clock::now();
     auto enqueued = parseISO8601(job.getEnqueuedAt());

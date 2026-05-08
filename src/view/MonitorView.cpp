@@ -2,6 +2,7 @@
 #include "ui.h"
 #include <iostream>
 #include <algorithm>
+#include <string>
 
 using namespace UI;
 
@@ -54,6 +55,23 @@ void MonitorView::showStockLabel(const std::string& sampleId,
               << sc << padLeft(std::to_string(stock), 5) << RESET
               << "  " << sc << padRight(label, 4) << RESET
               << "  │\n";
+}
+
+void MonitorView::showProductionProgress(const ProductionJob& job, int elapsedMinutes) const {
+    int total     = job.getTotalTime();
+    int pct       = (total > 0) ? std::min(100, elapsedMinutes * 100 / total) : 100;
+    int remaining = std::max(0, total - elapsedMinutes);
+
+    const int barW = 12;
+    int filled = barW * pct / 100;
+    std::string bar;
+    for (int i = 0; i < barW; ++i)
+        bar += (i < filled ? "█" : "░");
+
+    std::cout << "  │     " << CYAN << "└ 생산중  " << bar
+              << "  " << BOLD << padLeft(std::to_string(pct), 3) << "%" << RESET
+              << "  잔여 " << YELLOW << padLeft(std::to_string(remaining), 5) << "분" << RESET
+              << "        │\n";
 }
 
 void MonitorView::showStockHeader() const {

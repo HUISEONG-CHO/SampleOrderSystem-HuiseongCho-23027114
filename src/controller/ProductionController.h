@@ -14,6 +14,7 @@ public:
     bool hasJobs() const;
     const ProductionJob* currentJob() const;
     int  elapsedMinutes(const ProductionJob& job) const;
+    std::vector<ProductionJob> getAllJobs() const;
 
 private:
     SampleRepository&        sampleRepo;
