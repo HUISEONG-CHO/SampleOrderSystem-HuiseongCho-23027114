@@ -100,7 +100,8 @@ monitor/DataPersistence-HuiseongCho-23027114/
     model/
       Record.h / .cpp
     repository/
-      JsonRepository.h / .cpp # 파일 I/O + 직렬화
+      IRepository.h           # CRUD 인터페이스 (템플릿: save/findById/findAll/update/remove)
+      JsonRepository.h / .cpp # IRepository 구현, 파일 I/O + 직렬화
     main.cpp
   CMakeLists.txt
 ```
