@@ -1,3 +1,7 @@
+#ifdef _WIN32
+#define NOMINMAX
+#include <windows.h>
+#endif
 #include "controller/SampleController.h"
 #include "controller/OrderController.h"
 #include "controller/ProductionController.h"
@@ -92,6 +96,10 @@ static void menuRelease(ReleaseController& rc, ReleaseView& rv, MainView& mv) {
 }
 
 int main() {
+#ifdef _WIN32
+    SetConsoleOutputCP(CP_UTF8);
+    SetConsoleCP(CP_UTF8);
+#endif
     SampleRepository          sampleRepo("samples.json");
     OrderRepository           orderRepo("orders.json");
     std::queue<ProductionJob> jobQueue;
