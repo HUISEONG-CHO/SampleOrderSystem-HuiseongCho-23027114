@@ -5,7 +5,7 @@
 
 class SampleController {
 public:
-    explicit SampleController(const std::string& filePath);
+    explicit SampleController(SampleRepository& repo);
 
     void               registerSample(const std::string& name, int avgProductionTime, double yieldRate);
     Sample             getSample(const std::string& id) const;
@@ -13,6 +13,6 @@ public:
     std::vector<Sample> searchByName(const std::string& keyword) const;
 
 private:
-    SampleRepository repo;
-    std::string      generateId() const;
+    SampleRepository& repo;
+    std::string       generateId() const;
 };

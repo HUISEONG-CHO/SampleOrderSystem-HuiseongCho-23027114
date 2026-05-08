@@ -4,7 +4,8 @@
 
 class SampleControllerTest : public ::testing::Test {
 protected:
-    SampleController controller{"test_sc_samples.json"};
+    SampleRepository repo{"test_sc_samples.json"};
+    SampleController controller{repo};
     void TearDown() override {
         std::filesystem::remove("test_sc_samples.json");
     }

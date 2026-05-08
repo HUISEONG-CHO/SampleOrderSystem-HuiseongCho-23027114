@@ -1,8 +1,7 @@
 #include "SampleController.h"
-#include <algorithm>
 #include <stdexcept>
 
-SampleController::SampleController(const std::string& filePath) : repo(filePath) {}
+SampleController::SampleController(SampleRepository& repo) : repo(repo) {}
 
 std::string SampleController::generateId() const {
     return "S" + std::to_string(repo.findAll().size() + 1);
