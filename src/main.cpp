@@ -121,12 +121,16 @@ static void menuMonitor(MonitorController& mc, SampleController& sc,
 }
 
 static void menuProduction(ProductionController& pc, ProductionView& pv, MainView& mv) {
-    if (pc.hasJobs()) {
-        const ProductionJob* job = pc.currentJob();
-        pv.showCurrentJob(*job, pc.elapsedMinutes(*job));
-    } else {
+    auto jobs = pc.getAllJobs();
+    if (jobs.empty()) {
         mv.showMessage("현재 생산 중인 작업 없음");
+        return;
     }
+    // 첫 번째: 현재 생산 중
+    pv.showCurrentJob(jobs.front(), pc.elapsedMinutes(jobs.front()));
+    // 나머지: 대기 큐 (FIFO)
+    std::vector<ProductionJob> waiting(jobs.begin() + 1, jobs.end());
+    pv.showQueue(waiting);
 }
 
 static void menuRelease(ReleaseController& rc, ReleaseView& rv, MainView& mv) {
