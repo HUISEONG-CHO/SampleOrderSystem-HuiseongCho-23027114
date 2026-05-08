@@ -43,9 +43,15 @@ static void menuSample(SampleController& sc, SampleView& sv, MainView& mv) {
     }
 }
 
-static void menuOrder(OrderController& oc, MainView& mv) {
+static void menuOrder(OrderController& oc, SampleController& sc, MainView& mv) {
     std::string sid, cust; int qty;
     std::cout << "시료 ID: "; std::getline(std::cin, sid);
+
+    bool exists = false;
+    for (const auto& s : sc.getAllSamples())
+        if (s.getId() == sid) { exists = true; break; }
+    if (!exists) { mv.showError("입력한 시료가 존재하지 않습니다"); return; }
+
     std::cout << "고객명: ";  std::getline(std::cin, cust);
     std::cout << "수량: ";    std::cin >> qty; clearInput();
     try {
@@ -138,7 +144,7 @@ int main() {
 
         bool acted = true;
         if      (sel == "1" || sel == "시료관리")  menuSample(sc, sv, mv);
-        else if (sel == "2" || sel == "주문접수"  || sel == "시료주문 접수") menuOrder(oc, mv);
+        else if (sel == "2" || sel == "주문접수"  || sel == "시료주문 접수") menuOrder(oc, sc, mv);
         else if (sel == "3" || sel == "승인거절"  || sel == "주문 승인·거절") menuApprove(oc, ov, orderRepo, mv);
         else if (sel == "4" || sel == "모니터링"  || sel == "현황 모니터링") menuMonitor(mc, sc, monv);
         else if (sel == "5" || sel == "생산라인")  menuProduction(pc, pv, mv);
