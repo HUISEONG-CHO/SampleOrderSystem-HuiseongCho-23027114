@@ -19,6 +19,10 @@ std::vector<Sample> SampleController::getAllSamples() const {
     return repo.findAll();
 }
 
+void SampleController::deleteSample(const std::string& id) {
+    repo.remove(id);
+}
+
 std::vector<Sample> SampleController::searchByKeyword(const std::string& keyword) const {
     std::vector<Sample> result;
     for (const auto& s : repo.findAll()) {
