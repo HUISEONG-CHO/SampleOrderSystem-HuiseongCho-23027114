@@ -99,9 +99,6 @@ static void menuMonitor(MonitorController& mc, SampleController& sc,
 static void menuProduction(ProductionController& pc, ProductionView& pv, MainView& mv) {
     if (pc.hasJobs()) {
         pv.showCurrentJob(*pc.currentJob());
-        std::cout << "  1. 생산완료\n  0. 돌아가기\n> ";
-        std::string cmd; std::getline(std::cin, cmd);
-        if (cmd == "1" || cmd == "생산완료") { pc.completeProduction(); mv.showMessage("생산 완료 처리됨"); }
     } else {
         mv.showMessage("현재 생산 중인 작업 없음");
     }
