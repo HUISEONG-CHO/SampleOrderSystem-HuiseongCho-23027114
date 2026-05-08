@@ -26,7 +26,6 @@ static void printBox(const std::string& msg, char borderChar = '-') {
 }
 
 void MainView::showMenu() const {
-    std::cout << "\033[2J\033[H";   // 화면 지우고 커서 맨 위로
     std::cout << "=============================\n";
     std::cout << "   S-Semi 시료 생산주문관리\n";
     std::cout << "=============================\n";
