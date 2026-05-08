@@ -44,16 +44,18 @@ void ProductionView::showQueue(const std::vector<ProductionJob>& jobs) const {
         std::cout << "  " << DIM << "(대기 중인 작업 없음)" << RESET << "\n";
         return;
     }
-    std::cout << "  ┌────┬──────────────┬────────────┐\n";
+    std::cout << "  ┌────┬──────────────┬──────────┬────────────┐\n";
     std::cout << "  │ "  << BOLD << "No" << RESET
               << " │ " << BOLD << padRight("주문 ID", 12) << RESET
+              << " │ " << BOLD << padLeft("시료 ID", 8) << RESET
               << " │ " << BOLD << padLeft("생산량", 10) << RESET << " │\n";
-    std::cout << "  ├────┼──────────────┼────────────┤\n";
+    std::cout << "  ├────┼──────────────┼──────────┼────────────┤\n";
     int idx = 1;
     for (const auto& job : jobs) {
         std::cout << "  │ " << padLeft(std::to_string(idx++), 2)
                   << " │ " << padRight(job.getOrderId(), 12)
+                  << " │ " << padLeft(job.getSampleId(), 8)
                   << " │ " << padLeft(std::to_string(job.getProductionQty()) + "개", 10) << " │\n";
     }
-    std::cout << "  └────┴──────────────┴────────────┘\n";
+    std::cout << "  └────┴──────────────┴──────────┴────────────┘\n";
 }
