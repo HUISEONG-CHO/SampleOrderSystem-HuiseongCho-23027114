@@ -319,6 +319,66 @@ REJECTED는 정상 흐름 외 상태 — 모니터링 제외.
 
 ---
 
+## 개발 방법론
+
+### SubAgent 역할
+
+| Agent | 역할 |
+|---|---|
+| **SubAgent1** — 문서 정합성 검증 | Phase Design 문서가 CLAUDE.md 개발 계획과 정합하는지 검증 |
+| **SubAgent2** — AI Action | 실제 코드 구현 수행 |
+| **SubAgent3** — Test Verify | GTest 기반 테스트 실행 및 PASS 여부 확인 |
+| **SubAgent4** — Compliance Verify | 코드가 C++ 공통 규칙·네이밍 컨벤션·아키텍처 원칙을 준수하는지 검증 |
+
+> SubAgent3과 SubAgent4는 **병렬**로 실행한다.
+
+---
+
+### Phase 개발 절차
+
+각 PoC는 세부 PHASE로 분할하며, 각 Phase는 아래 순서를 따른다.
+
+```
+Step 1. Phase Design 문서 작성
+          ↓
+Step 2. SubAgent1 — 문서 정합성 검증
+          → 정합 확인 시: Design 문서 commit
+          ↓
+Step 3. SubAgent2 — 코드 구현 (RED→GREEN TDD 원칙 적용)
+          ↓
+Step 4. SubAgent3 & SubAgent4 — 테스트·컴플라이언스 병렬 검증
+          ↓
+Step 5. 빌드 후 사용자 리뷰
+```
+
+---
+
+### TDD 원칙 (RED → GREEN)
+
+테스트 도구: **Google Test (GTest)**
+
+#### RED 단계 — 목표 설정 & 테스트 선행 작성
+
+검토 항목:
+- [ ] 테스트는 구현에 대한 계획과 목표점이 된다.
+- [ ] 테스트 작성을 제일 먼저 진행했는지
+- [ ] 요구사항에 맞는 테스트 코드를 만들고 테스트 수행을 했는지
+- [ ] Plan.md 생성 후 검토 완료
+
+커밋: `test: [Phase명] RED — 테스트 코드 작성`
+
+#### GREEN 단계 — 구현 & PASS 확인
+
+검토 항목:
+- [ ] RED 단계의 테스트가 요구를 벗어난 불필요한 코드를 생성하지 않았는지 검토
+- [ ] 테스트를 수행하고 PASS 되는지 확인
+
+커밋:
+- `feat: [Phase명] GREEN — 구현 코드 작성`
+- `test: [Phase명] GREEN — 테스트 PASS 확인`
+
+---
+
 ## 개발 순서
 
 각 PoC 완료 시 아래 **git 절차**를 동일하게 적용한다.
@@ -337,6 +397,9 @@ REJECTED는 정상 흐름 외 상태 — 모니터링 제외.
 ```
 
 ### 전체 진행 순서
+
+각 Step 시작 전 해당 PoC의 **개발 PLAN**(세부 Phase 목록)을 먼저 작성한 뒤,
+Phase별로 [Phase 개발 절차](#phase-개발-절차)를 반복한다.
 
 **Step 1 — PoC 1: MVC 스켈레톤** (`ConsoleMVC-HuiseongCho-23027114`)
 - 목표: MVC 구조 확정
@@ -363,9 +426,12 @@ REJECTED는 정상 흐름 외 상태 — 모니터링 제외.
 
 ## Agentic Engineering 주안점 (미션 2)
 
-- `CLAUDE.md`: C++ 프로젝트 구조, 네이밍 컨벤션(PascalCase 클래스, camelCase 멤버), 도메인 규칙 문서화
-- `PRD.md`: 기능 요구사항 상세 명세
-- **Harness**: CMake + `tests/` 디렉터리로 자동화 테스트 구성 (`ctest` 또는 단순 실행 스크립트)
+- `CLAUDE.md`: C++ 프로젝트 구조, 네이밍 컨벤션(PascalCase 클래스, camelCase 멤버), 도메인 규칙, 개발 방법론 문서화
+- `PRD.md`: 사용자 관점 기능 요구사항 개요
+- `FEATURE/`: 기능별 상세 요구사항 (비기술, 사용자 기준)
+- **Harness**: CMake + GTest(`tests/` 디렉터리)로 자동화 테스트 구성
 - **Test script**: 주문 상태 전환, `ceil(부족분 / (수율 × 0.9))` 계산, 생산라인 FIFO 순서 등 핵심 로직 커버
+- **TDD**: 각 Phase마다 RED(테스트 선행) → GREEN(구현·PASS) 사이클 준수
+- **SubAgent**: 문서 정합성(1) → 구현(2) → 테스트·컴플라이언스 병렬(3&4) 순서로 실행
 - **CleanCode**: 단일 책임 원칙, RAII, `const` 정확성, 스마트 포인터 사용
-- **Commit 이력**: 기능 단위 커밋, 명확한 메시지
+- **Commit 이력**: Phase 단위 커밋, `test:/feat:/docs:` 접두사 사용
