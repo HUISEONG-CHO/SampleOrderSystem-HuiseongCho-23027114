@@ -81,7 +81,7 @@ monitor/ConsoleMVC-HuiseongCho-23027114/
 
 ### 구현 내용
 
-- 저장 방식: **JSON 파일** — `C:\reviewer\json-lib` (자체 제작 C++17 JSON 라이브러리) 사용
+- 저장 방식: **JSON 파일** — JSON 파서·직렬화기를 **프로젝트 내부에서 직접 구현** (`src/json/`)
 - CRUD 4가지 모두 구현
   - Create: 객체 생성 후 `Json::saveFile`로 직렬화·저장
   - Read: `Json::parseFile`로 로드 후 `JsonValue`에서 객체 역직렬화
@@ -92,33 +92,38 @@ monitor/ConsoleMVC-HuiseongCho-23027114/
 ```
 monitor/DataPersistence-HuiseongCho-23027114/
   src/
+    json/
+      JsonValue.h / .cpp      # JSON 타입 (object / array / string / number / bool / null)
+      JsonParser.h / .cpp     # 텍스트 → JsonValue 파서
+      JsonSerializer.h / .cpp # JsonValue → 텍스트 직렬화
+      json.h                  # 통합 헤더: Json::parseFile / Json::saveFile
     model/
       Record.h / .cpp
     repository/
-      JsonRepository.h / .cpp  # json-lib 사용, 파일 I/O + 직렬화
+      JsonRepository.h / .cpp # 파일 I/O + 직렬화
     main.cpp
-  CMakeLists.txt               # json-lib를 add_subdirectory로 링크
+  CMakeLists.txt
 ```
 
-**json-lib API 사용 방식:**
+**JSON 모듈 API (자체 구현 목표):**
 ```cpp
-#include <json/json.h>
+#include "json/json.h"
 
 // 저장
-JsonValue arr(JsonValue::JsonArray{});
-// ... JsonValue 구성
+JsonValue arr(JsonValue::Type::Array);
 Json::saveFile(arr, "data.json", /*pretty=*/true);
 
 // 로드
 JsonValue data = Json::parseFile("data.json");
 for (size_t i = 0; i < data.size(); ++i) {
-    auto id   = data[i].at("id").asInt();
-    auto name = data[i].at("name").asString();
+    auto id   = data[i]["id"].asInt();
+    auto name = data[i]["name"].asString();
 }
 ```
 
 ### 핵심 설계 포인트
 
+- JSON 모듈(`src/json/`)은 외부 라이브러리 없이 C++17 표준만으로 구현 — clone 즉시 빌드 가능
 - 저장/로드 로직은 별도 `repository` 레이어로 분리 (`IRepository` 인터페이스 정의)
 - 파일 경로는 생성자 인자로 주입 (하드코딩 금지)
 - `JsonParseError` 예외 처리 포함
@@ -143,12 +148,17 @@ for (size_t i = 0; i < data.size(); ++i) {
 ```
 monitor/DataMonitor-HuiseongCho-23027114/
   src/
+    json/
+      JsonValue.h / .cpp      # PoC 2와 동일한 자체 구현 JSON 모듈 (복사 포함)
+      JsonParser.h / .cpp
+      JsonSerializer.h / .cpp
+      json.h
     reader/
-      JsonReader.h / .cpp    # json-lib의 Json::parseFile 래핑, 쓰기 없음
+      JsonReader.h / .cpp     # Json::parseFile 래핑, 쓰기 없음 (Read-only)
     display/
       ConsoleDisplay.h / .cpp
     main.cpp
-  CMakeLists.txt             # json-lib를 add_subdirectory로 링크
+  CMakeLists.txt
 ```
 
 ---
@@ -168,11 +178,16 @@ monitor/DataMonitor-HuiseongCho-23027114/
 ```
 monitor/DummyDataGenerator-HuiseongCho-23027114/
   src/
+    json/
+      JsonValue.h / .cpp      # 자체 구현 JSON 모듈 (복사 포함)
+      JsonParser.h / .cpp
+      JsonSerializer.h / .cpp
+      json.h
     generator/
       SampleGenerator.h / .cpp
       OrderGenerator.h / .cpp
     main.cpp
-  CMakeLists.txt               # json-lib를 add_subdirectory로 링크
+  CMakeLists.txt
 ```
 
 ---
@@ -184,6 +199,11 @@ monitor/DummyDataGenerator-HuiseongCho-23027114/
 ```
 C:\reviewer\monitor\          ← 본 프로젝트 루트 (= SampleOrderSystem-HuiseongCho-23027114)
   src/
+    json/
+      JsonValue.h / .cpp        # 자체 구현 JSON 모듈 (외부 의존 없음)
+      JsonParser.h / .cpp
+      JsonSerializer.h / .cpp
+      json.h
     model/
       Sample.h / .cpp           # Sample 도메인 (ID, 이름, 평균생산시간, 수율, 재고)
       Order.h / .cpp            # Order 도메인 + OrderStatus enum
@@ -206,7 +226,7 @@ C:\reviewer\monitor\          ← 본 프로젝트 루트 (= SampleOrderSystem-H
       ProductionView.h / .cpp
       ReleaseView.h / .cpp
     main.cpp
-  CMakeLists.txt               # json-lib를 add_subdirectory로 링크
+  CMakeLists.txt
   tests/
     test_order.cpp              # 주문 상태 전환 테스트
     test_production.cpp         # 실생산량 계산 + FIFO 테스트
@@ -311,7 +331,7 @@ REJECTED는 정상 흐름 외 상태 — 모니터링 제외.
 
 - 표준: **C++17**
 - 빌드: **CMake 3.15** 이상
-- 외부 의존성: **`C:\reviewer\json-lib`** (자체 제작 JSON 라이브러리) — `#include <json/json.h>` 단일 인클루드
+- JSON: **프로젝트 내 자체 구현** (`src/json/`) — 외부 라이브러리 의존 없음, clone 후 즉시 빌드 가능
 - 네이밍: 클래스 `PascalCase`, 멤버변수/함수 `camelCase`, 상수 `UPPER_SNAKE_CASE`
 - 헤더 가드: `#pragma once`
 - 메모리: 원시 포인터 대신 `std::unique_ptr` / `std::shared_ptr` 사용
