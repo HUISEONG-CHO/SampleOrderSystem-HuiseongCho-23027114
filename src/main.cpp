@@ -121,14 +121,21 @@ int main() {
     while (true) {
         mv.showMenu();
         std::string sel; std::getline(std::cin, sel);
-        if      (sel == "0" || sel == "종료")      { mv.showMessage("종료합니다."); break; }
-        else if (sel == "1" || sel == "시료관리")  menuSample(sc, sv, mv);
+        if (sel == "0" || sel == "종료") { mv.showMessage("종료합니다."); break; }
+
+        bool acted = true;
+        if      (sel == "1" || sel == "시료관리")  menuSample(sc, sv, mv);
         else if (sel == "2" || sel == "주문접수"  || sel == "시료주문 접수") menuOrder(oc, mv);
         else if (sel == "3" || sel == "승인거절"  || sel == "주문 승인·거절") menuApprove(oc, ov, orderRepo, mv);
         else if (sel == "4" || sel == "모니터링"  || sel == "현황 모니터링") menuMonitor(mc, sc, monv);
         else if (sel == "5" || sel == "생산라인")  menuProduction(pc, pv, mv);
         else if (sel == "6" || sel == "출고처리")  menuRelease(rc, rv, mv);
-        else mv.showMessage("잘못된 입력입니다.");
+        else { mv.showMessage("잘못된 입력입니다."); acted = false; }
+
+        if (acted) {
+            std::cout << "\n[엔터를 누르면 메뉴로 돌아갑니다]";
+            std::cin.get();
+        }
     }
     return 0;
 }
