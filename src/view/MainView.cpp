@@ -1,5 +1,29 @@
 #include "MainView.h"
 #include <iostream>
+#include <string>
+
+// UTF-8 문자열 표시 너비 계산 (한글/CJK = 2칸, ASCII = 1칸)
+static size_t displayWidth(const std::string& s) {
+    size_t w = 0;
+    for (size_t i = 0; i < s.size(); ) {
+        unsigned char c = s[i];
+        if      (c < 0x80) { w += 1; i += 1; }
+        else if (c < 0xE0) { w += 1; i += 2; }
+        else if (c < 0xF0) { w += 2; i += 3; }
+        else               { w += 2; i += 4; }
+    }
+    return w;
+}
+
+static void printBox(const std::string& msg, char borderChar = '-') {
+    const size_t pad = 2;
+    size_t inner = displayWidth(msg) + pad * 2;
+    std::string hLine(inner, borderChar);
+    std::string spaces(pad, ' ');
+    std::cout << "+" << hLine << "+\n";
+    std::cout << "|" << spaces << msg << spaces << "|\n";
+    std::cout << "+" << hLine << "+\n";
+}
 
 void MainView::showMenu() const {
     std::cout << "\n=============================\n";
@@ -17,9 +41,11 @@ void MainView::showMenu() const {
 }
 
 void MainView::showMessage(const std::string& msg) const {
-    std::cout << msg << "\n";
+    std::cout << "\n";
+    printBox(msg, '-');
 }
 
 void MainView::showError(const std::string& err) const {
-    std::cout << "[오류] " << err << "\n";
+    std::cout << "\n";
+    printBox("오류: " + err, '-');
 }
