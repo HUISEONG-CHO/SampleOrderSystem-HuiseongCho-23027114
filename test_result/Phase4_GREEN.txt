@@ -1,0 +1,20 @@
+Phase    : Phase4
+Stage    : GREEN
+Date     : 2026-05-08
+Result   : PASS
+
+[테스트 목록]
+- SampleControllerTest.RegisterAndGetAll         : PASS
+- SampleControllerTest.GetSampleById             : PASS
+- SampleControllerTest.SearchByName              : PASS
+- SampleControllerTest.NotFoundThrows            : PASS
+- OrderControllerTest.PlaceOrderReserved         : PASS
+- OrderControllerTest.ApproveWithSufficientStock : PASS
+- OrderControllerTest.ApproveWithInsufficientStock: PASS
+- OrderControllerTest.ProductionQtyCalculation   : PASS  ← ceil(100/(0.80*0.9))=139
+- OrderControllerTest.RejectOrder                : PASS
+- OrderControllerTest.PlaceOrderInvalidSample    : PASS
+  (+ 기존 22개 회귀 없음)
+
+[빌드 정보]
+- 총 테스트 : 32 / 32 PASS  (0.35 sec)
