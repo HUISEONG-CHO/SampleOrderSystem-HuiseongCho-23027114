@@ -1,0 +1,12 @@
+Phase    : Phase1
+Stage    : RED
+Date     : 2026-05-08
+Result   : FAIL
+
+[테스트 목록]
+- PlaceholderTest.AlwaysPass : FAIL
+  원인 : CMakeLists.txt 없음 → CMake 구성 불가
+
+[빌드 오류]
+CMake Error: The source directory does not appear to contain CMakeLists.txt.
+→ 빌드 환경 미구성 (의도된 RED 실패)
