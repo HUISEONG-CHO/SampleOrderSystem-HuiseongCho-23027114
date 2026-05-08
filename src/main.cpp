@@ -32,7 +32,6 @@ static void menuSample(SampleController& sc, SampleView& sv, MainView& mv) {
     std::cout << "  │  [1]  등록               │\n";
     std::cout << "  │  [2]  목록               │\n";
     std::cout << "  │  [3]  검색               │\n";
-    std::cout << "  │  [4]  삭제               │\n";
     std::cout << "  ├──────────────────────────┤\n";
     std::cout << "  │  [0]  돌아가기           │\n";
     std::cout << "  └──────────────────────────┘\n";
@@ -51,15 +50,6 @@ static void menuSample(SampleController& sc, SampleView& sv, MainView& mv) {
         std::string kw;
         std::cout << "\n  검색어 (ID/이름/생산시간/수율/재고) : "; std::getline(std::cin, kw);
         sv.showAllSamples(sc.searchByKeyword(kw));
-    } else if (cmd == "4" || cmd == "삭제") {
-        sv.showAllSamples(sc.getAllSamples());
-        std::cout << "\n  삭제할 시료 ID : "; std::string id; std::getline(std::cin, id);
-        bool exists = false;
-        for (const auto& s : sc.getAllSamples())
-            if (s.getId() == id) { exists = true; break; }
-        if (!exists) { mv.showError("입력한 시료가 존재하지 않습니다"); return; }
-        sc.deleteSample(id);
-        mv.showMessage("시료 삭제 완료");
     }
 }
 

@@ -11,7 +11,6 @@ public:
     Sample             getSample(const std::string& id) const;
     std::vector<Sample> getAllSamples() const;
     std::vector<Sample> searchByKeyword(const std::string& keyword) const;
-    void               deleteSample(const std::string& id);
 
 private:
     SampleRepository& repo;
