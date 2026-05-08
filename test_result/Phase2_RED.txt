@@ -1,0 +1,18 @@
+Phase    : Phase2
+Stage    : RED
+Date     : 2026-05-08
+Result   : FAIL
+
+[테스트 목록]
+- SampleTest.ConstructorSetsFields  : FAIL
+- SampleTest.DefaultConstructor     : FAIL
+- SampleTest.SetStock               : FAIL
+- OrderTest.ConstructorSetsFields   : FAIL
+- OrderTest.DefaultStatus           : FAIL
+- OrderTest.SetStatus               : FAIL
+- OrderTest.AllStatusValues         : FAIL
+- ProductionJobTest.ConstructorSetsFields : FAIL
+
+[빌드 오류]
+error C1083: 'model/Sample.h' / 'model/Order.h' / 'model/ProductionJob.h': No such file or directory
+→ 도메인 모델 미구현 (의도된 RED 실패)
