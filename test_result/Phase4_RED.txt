@@ -1,0 +1,13 @@
+Phase    : Phase4
+Stage    : RED
+Date     : 2026-05-08
+Result   : FAIL
+
+[테스트 목록]
+- SampleControllerTest (4개) : FAIL
+- OrderControllerTest  (6개) : FAIL
+
+[빌드 오류]
+error C1083: 'controller/SampleController.h': No such file or directory
+error C1083: 'controller/OrderController.h': No such file or directory
+→ Controller 레이어 미구현 (의도된 RED 실패)
