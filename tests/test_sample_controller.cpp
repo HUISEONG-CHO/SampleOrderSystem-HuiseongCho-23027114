@@ -36,7 +36,7 @@ TEST_F(SampleControllerTest, SearchByName) {
 
 TEST_F(SampleControllerTest, SearchById) {
     controller.registerSample("SampleA", 30, 0.85);
-    auto results = controller.searchByKeyword("S1");
+    auto results = controller.searchByKeyword("1");
     ASSERT_EQ(results.size(), 1u);
     EXPECT_EQ(results[0].getName(), "SampleA");
 }

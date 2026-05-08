@@ -23,6 +23,7 @@ set(MODEL_SOURCES
 set(REPOSITORY_SOURCES
     src/repository/SampleRepository.cpp
     src/repository/OrderRepository.cpp
+    src/repository/ProductionJobRepository.cpp
 )
 
 set(CONTROLLER_SOURCES

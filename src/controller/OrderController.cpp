@@ -6,10 +6,10 @@
 #include <sstream>
 #include <iomanip>
 
-OrderController::OrderController(SampleRepository& sampleRepo,
-                                 OrderRepository&  orderRepo,
-                                 std::queue<ProductionJob>& productionQueue)
-    : sampleRepo(sampleRepo), orderRepo(orderRepo), productionQueue(productionQueue) {}
+OrderController::OrderController(SampleRepository&        sampleRepo,
+                                 OrderRepository&         orderRepo,
+                                 ProductionJobRepository& jobRepo)
+    : sampleRepo(sampleRepo), orderRepo(orderRepo), jobRepo(jobRepo) {}
 
 std::string OrderController::generateOrderId() const {
     return std::to_string(orderRepo.findAll().size() + 1);
@@ -56,7 +56,7 @@ void OrderController::approveOrder(const std::string& orderId) {
 
         ProductionJob job(orderId, order.getSampleId(),
                           productionQty, totalTime, currentTimestamp());
-        productionQueue.push(job);
+        jobRepo.save(job);
 
         order.setStatus(OrderStatus::PRODUCING);
         orderRepo.update(orderId, order);

@@ -1,21 +1,24 @@
 #pragma once
 #include "repository/SampleRepository.h"
 #include "repository/OrderRepository.h"
+#include "repository/ProductionJobRepository.h"
 #include "model/ProductionJob.h"
-#include <queue>
 
 class ProductionController {
 public:
-    ProductionController(SampleRepository& sampleRepo,
-                         OrderRepository&  orderRepo,
-                         std::queue<ProductionJob>& jobQueue);
+    ProductionController(SampleRepository&        sampleRepo,
+                         OrderRepository&         orderRepo,
+                         ProductionJobRepository& jobRepo);
 
-    void completeProduction();
+    void tick();
     bool hasJobs() const;
     const ProductionJob* currentJob() const;
+    int  elapsedMinutes(const ProductionJob& job) const;
 
 private:
-    SampleRepository&          sampleRepo;
-    OrderRepository&           orderRepo;
-    std::queue<ProductionJob>& jobQueue;
+    SampleRepository&        sampleRepo;
+    OrderRepository&         orderRepo;
+    ProductionJobRepository& jobRepo;
+
+    std::string currentTimestamp() const;
 };

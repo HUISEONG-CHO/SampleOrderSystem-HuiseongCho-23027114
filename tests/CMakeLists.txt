@@ -19,6 +19,7 @@ add_executable(SampleOrderSystem_Tests
     ${CMAKE_SOURCE_DIR}/src/model/ProductionJob.cpp
     ${CMAKE_SOURCE_DIR}/src/repository/SampleRepository.cpp
     ${CMAKE_SOURCE_DIR}/src/repository/OrderRepository.cpp
+    ${CMAKE_SOURCE_DIR}/src/repository/ProductionJobRepository.cpp
     ${CMAKE_SOURCE_DIR}/src/controller/SampleController.cpp
     ${CMAKE_SOURCE_DIR}/src/controller/OrderController.cpp
     ${CMAKE_SOURCE_DIR}/src/controller/ProductionController.cpp

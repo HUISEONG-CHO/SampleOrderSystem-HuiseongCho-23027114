@@ -15,7 +15,7 @@
 #include "view/ReleaseView.h"
 #include "repository/SampleRepository.h"
 #include "repository/OrderRepository.h"
-#include <queue>
+#include "repository/ProductionJobRepository.h"
 #include <iostream>
 #include <string>
 #include <limits>
@@ -98,7 +98,8 @@ static void menuMonitor(MonitorController& mc, SampleController& sc,
 
 static void menuProduction(ProductionController& pc, ProductionView& pv, MainView& mv) {
     if (pc.hasJobs()) {
-        pv.showCurrentJob(*pc.currentJob());
+        const ProductionJob* job = pc.currentJob();
+        pv.showCurrentJob(*job, pc.elapsedMinutes(*job));
     } else {
         mv.showMessage("현재 생산 중인 작업 없음");
     }
@@ -126,13 +127,13 @@ int main() {
     SetConsoleOutputCP(CP_UTF8);
     SetConsoleCP(CP_UTF8);
 #endif
-    SampleRepository          sampleRepo("samples.json");
-    OrderRepository           orderRepo("orders.json");
-    std::queue<ProductionJob> jobQueue;
+    SampleRepository        sampleRepo("samples.json");
+    OrderRepository         orderRepo("orders.json");
+    ProductionJobRepository jobRepo("jobs.json");
 
     SampleController     sc(sampleRepo);
-    OrderController      oc(sampleRepo, orderRepo, jobQueue);
-    ProductionController pc(sampleRepo, orderRepo, jobQueue);
+    OrderController      oc(sampleRepo, orderRepo, jobRepo);
+    ProductionController pc(sampleRepo, orderRepo, jobRepo);
     MonitorController    mc(sampleRepo, orderRepo);
     ReleaseController    rc(sampleRepo, orderRepo);
 
@@ -144,6 +145,7 @@ int main() {
     ReleaseView    rv;
 
     while (true) {
+        pc.tick();
         mv.showMenu();
         std::string sel; std::getline(std::cin, sel);
         if (sel == "0" || sel == "종료") { mv.showMessage("종료합니다."); break; }
