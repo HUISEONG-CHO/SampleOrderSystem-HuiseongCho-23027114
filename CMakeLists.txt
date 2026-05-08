@@ -21,7 +21,12 @@ set(REPOSITORY_SOURCES
     src/repository/OrderRepository.cpp
 )
 
-add_executable(SampleOrderSystem src/main.cpp ${JSON_SOURCES} ${MODEL_SOURCES} ${REPOSITORY_SOURCES})
+set(CONTROLLER_SOURCES
+    src/controller/SampleController.cpp
+    src/controller/OrderController.cpp
+)
+
+add_executable(SampleOrderSystem src/main.cpp ${JSON_SOURCES} ${MODEL_SOURCES} ${REPOSITORY_SOURCES} ${CONTROLLER_SOURCES})
 target_include_directories(SampleOrderSystem PRIVATE src)
 
 include(FetchContent)
