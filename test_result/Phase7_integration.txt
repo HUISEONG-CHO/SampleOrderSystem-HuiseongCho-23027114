@@ -1,0 +1,21 @@
+Phase    : Phase7
+Stage    : 통합 검증 (메뉴 시스템 + 전체 시나리오)
+Date     : 2026-05-08
+Result   : PASS
+
+[시나리오 실행 결과]
+1. 시료 등록 (SampleA, 30분, 수율 0.80) → ID=S1 ✓
+2. 시료 목록 확인 → [S1] SampleA | 재고: 0 ✓
+3. 주문 접수 (S1, CustomerA, 수량=200) → ID=O1, RESERVED ✓
+4. 주문 승인 (O1) → 재고 부족(0 < 200) → PRODUCING ✓
+   실생산량 = ceil(200/(0.80×0.9)) = ceil(277.77) = 278 ✓
+   총생산시간 = 30 × 278 = 8340분 ✓
+5. 생산 완료 처리 → 재고 증가 + CONFIRMED ✓
+6. 출고 처리 (O1) → 재고 차감 + RELEASE ✓
+
+[전체 완료 기준 체크]
+- 6개 메뉴 동작 확인          : OK
+- 재고 부족 → PRODUCING 흐름  : OK
+- ceil 알고리즘 검증           : OK (278)
+- GTest 55/55 회귀 없음       : OK
+- JSON 영속성 (samples.json / orders.json 생성) : OK
