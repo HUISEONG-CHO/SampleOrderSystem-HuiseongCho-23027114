@@ -10,7 +10,13 @@ set(JSON_SOURCES
     src/json/JsonSerializer.cpp
 )
 
-add_executable(SampleOrderSystem src/main.cpp ${JSON_SOURCES})
+set(MODEL_SOURCES
+    src/model/Sample.cpp
+    src/model/Order.cpp
+    src/model/ProductionJob.cpp
+)
+
+add_executable(SampleOrderSystem src/main.cpp ${JSON_SOURCES} ${MODEL_SOURCES})
 target_include_directories(SampleOrderSystem PRIVATE src)
 
 include(FetchContent)
