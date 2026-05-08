@@ -26,6 +26,6 @@ std::string MonitorController::getStockLabel(const std::string& sampleId) const 
         totalQty += o.getQuantity();
     }
 
-    if (stock > totalQty) return "여유";
+    if (stock >= totalQty) return "여유";
     return "부족";
 }
